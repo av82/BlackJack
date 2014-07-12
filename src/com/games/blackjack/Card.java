@@ -18,4 +18,10 @@ public class Card {
 		return suit;
 	}
 	
+	@Override
+	public String toString(){
+		return Integer.toString(this.getValue())+ " of  " + this.getSuit().name();
+	}
+	
+	
 }

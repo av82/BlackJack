@@ -4,6 +4,10 @@ public class Game {
 	private Deck deck;
 	private Player player;
 	private Player dealer;
+	private final String START_COMMAND="y";
+	private final String QUIT_COMMAND="q";
+	private final String HIT_COMMAND="h";
+	private final String STAND_COMMAND="s";
 	
 	public Game(String playerName){ 
 		player=new Player(playerName,100);
@@ -19,6 +23,7 @@ public class Game {
 		p.getCards().add(deck.getCurrentIndex());
 	}
 	public void hit(Player p){
+		
 		p.getCards().add(deck.getCurrentIndex());
 		deck.setCurrentIndex(deck.getCurrentIndex()-1);
 	}
@@ -40,7 +45,7 @@ public class Game {
 	public void showCards(){
 		System.out.println("\t-----------------Dealer--------------------");
 		for(int i=0;i<dealer.getCards().size()-1;i++){
-			System.out.println("\t"+deck.getCard(dealer.getCards().get(i)));
+			System.out.println("\t"+deck.getCard(dealer.getCards().get(i)).toString());
 		}
 		System.out.println();
 		System.out.println();
@@ -67,6 +72,13 @@ public class Game {
 		else if(player.getHandValue(deck)==dealer.getHandValue(deck)){
 			System.out.println("Push"); 
 		}
+		
+	}
+	public static void main(String[] args){
+		
+		Game game = new Game("Arun"); 
+		game.deal();
+		
 		
 	}
 }
