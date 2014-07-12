@@ -1,14 +1,14 @@
 package com.games.blackjack;
 
+import java.util.Scanner;
+
 public class Game {
 	private Deck deck;
 	private Player player;
 	private Player dealer;
-	private final String START_COMMAND="y";
-	private final String QUIT_COMMAND="q";
-	private final String HIT_COMMAND="h";
-	private final String STAND_COMMAND="s";
-	
+	private Commands commands;
+	public Game(){ 
+	};
 	public Game(String playerName){ 
 		player=new Player(playerName,100);
 		dealer=new Player("Dealer",0);
@@ -76,9 +76,29 @@ public class Game {
 	}
 	public static void main(String[] args){
 		
-		Game game = new Game("Arun"); 
-		game.deal();
+		Game game= new Game();
+		System.out.println(" ----------- ---Lets  Play BlackJack --- -------------");
+		System.out.println();
+		System.out.println();
+		System.out.println(" --COMMANDS MENU ---------------------------------"); 
+		System.out.println(" ------ Start a game -  y ");
+		System.out.println(" ------ Quit a game  -  q ");
+		System.out.println(" ------ Call HIT     -  h ");
+		System.out.println(" ------ Call STAND   -  s ");
 		
+		System.out.print("Please enter y and hit return to start:\n ");
+		Scanner input = new Scanner(System.in);
+		String  command = input.nextLine();
+		while (!command.isEmpty()){
+			switch(game.commands){
+			case START_COMMAND:System.out.print("Please enter y and hit return to start !:\n  ");
+            command= input.nextLine();
+            default: break;
+		}
+		
+		Game blackjack = new Game("Arun"); 
+		blackjack.deal();
+		}
 		
 	}
 }
