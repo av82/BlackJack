@@ -5,31 +5,32 @@ import java.util.List;
 
 public class Player {
 	
-	private int balanceAmount;
-	private int bet;
+	private Integer balanceAmount;
+	private Integer bet;
 	private String name;
-	private int handValue=0;
+	private Integer handValue;
 	private List<Integer> cards;
 	
-	public Player(String name, int balanceAmount){ 
+	public Player(String name, Integer balanceAmount){ 
 		this.balanceAmount=balanceAmount;
 		this.name = name;
 		this.cards = new ArrayList<Integer>();
+		this.handValue=0;
 	}
 
-	public int getBalanceAmount() {
+	public Integer getBalanceAmount() {
 		return balanceAmount;
 	}
 
-	public void setBalanceAmount(int balanceAmount) {
+	public void setBalanceAmount(Integer balanceAmount) {
 		this.balanceAmount = balanceAmount;
 	}
 
-	public int getBet() {
+	public Integer getBet() {
 		return bet;
 	}
 
-	public void setBet(int bet) {
+	public void setBet(Integer bet) {
 		this.bet = bet;
 	}
 
@@ -41,23 +42,35 @@ public class Player {
 		this.name = name;
 	}
 
-	public int getHandValue(Deck deck) {
+	//get indices of cards dealt to this player with respect to the Deck
+	public List<Integer> getCards() {
+		return cards;
+	}
+
+	public Integer getHandValue(Deck deck) {
+		computeHandValue(deck);
+		return handValue;
+	}
+
+	public void setHandValue(Integer handValue) {
+		this.handValue = handValue;
+	}
+
+	private void  computeHandValue(Deck deck) {
 		Boolean aceCard=false;
+		int tmphandValue=0;
 		for(int i=0;i<this.getCards().size();i++){
 			int cardValue=deck.getCard(this.getCards().get(i)).getValue();
 			if(cardValue>10)
 				cardValue=10;
 			if(cardValue==1)
 				aceCard=true;
-			handValue=handValue+cardValue;
-			if(aceCard && (handValue+10 <=21))
-			   handValue=handValue+10;
+			tmphandValue=tmphandValue+cardValue;
+			if(aceCard && (tmphandValue+10 <=21))
+				tmphandValue=tmphandValue+10;
 		}
-		return handValue;
+		this.setHandValue(tmphandValue);
+	
 	}
 	
-	//get indices of cards dealt to this player with respect to the Deck
-	public List<Integer> getCards() {
-		return cards;
-	}
 }
