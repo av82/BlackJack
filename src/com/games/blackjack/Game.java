@@ -57,8 +57,6 @@ public class Game {
 			setCheckBlackjack(true);
 			decideWinner();
 			setCheckBlackjack(false);
-			
-			System.out.println("\nPlease enter h or s to hit/stand\n");
 	}
 	public void hit(Player p){
 		
@@ -73,10 +71,7 @@ public class Game {
 			deck=new Deck();
 			deck.shuffle();
 			//test only remove later
-			System.out.println("New Shuffle printing 6 cards");
-			for(int i=0;i<=6;i++){
-				System.out.println("\t"+deck.getCard(i).toString());
-			}
+			System.out.println("Not enough cards to play new Hand, Shuffling !!");
 		}
 		
 			hit(player);
@@ -116,7 +111,7 @@ public class Game {
 		//if player is already busted hit does not have 
 		if(!isBusted(player)){
 			hit(player);
-			//The dealer should hit until his hand value is 17 or greater.
+			//The dealer should hit until his hand value is 17 or greater. 
 			if (this.dealer.getHandValue(deck)<17){ 
 				hit(dealer);
 			}
@@ -136,7 +131,7 @@ public class Game {
 				}
 	}
 	public boolean checkBalance(Player p){
-		if(p.getBalanceAmount()<1){
+		if((p.getBalanceAmount()!=null) && (p.getBalanceAmount()<1)){
 			this.setGameOn(false);
 			return false;
 		}
@@ -145,11 +140,14 @@ public class Game {
 	public void placeBet(Player p){
 		Scanner in =new Scanner(System.in);
 		System.out.println("\nPlease enter amount of bet for this hand!!\n");
-		  while (!in.hasNextInt()) in.next();
+		  while (!in.hasNextInt()){
+			  System.out.println("Invalid $ amount, please bet atleast 1 chip");
+			  in.next();
+		  }
 		  Integer playerBet = in.nextInt();
 		while (((playerBet == null) || (playerBet<1) || (playerBet >p.getBalanceAmount()))){
 			if(playerBet<1){ 
-				System.out.println("You should bet more than 1 chip");
+				System.out.println("You should bet atleast 1 chip");
 			}
 			else if(playerBet>p.getBalanceAmount()){
 				System.out.println("\nYour bet exceeds your balance amount");
@@ -157,7 +155,10 @@ public class Game {
 			else{
 				System.out.println("\nInvalid bet, please enter a positive bet greater than 1 and less than your balance amount");
 			}
-					while (!in.hasNextInt()) in.next();
+			  while (!in.hasNextInt()){
+				  System.out.println("Invalid $ amount, please bet atleast 1 chip");
+				  in.next();
+			  }
 					playerBet=in.nextInt();
 		}
 		p.setBet(playerBet);
@@ -197,18 +198,22 @@ public class Game {
 		if((player.getHandValue(deck)==21) && (dealer.getHandValue(deck)==21) ){ 
 			System.out.println("\nBoth have a Blackjack !!, but you loose Bet !");
 			player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+			System.out.println("\n Your current balance is $"+ player.getBalanceAmount() );
 			this.setHandOn(false);
 		}
 		else if(player.getHandValue(deck)==21){
-			System.out.println("\nCongrats You have a BlackJack !!");
+			System.out.println("\nCongrats You have a BlackJack, You Win !!");
 			player.setBalanceAmount(player.getBalanceAmount()+(player.getBet()));
+			System.out.println("\n Your current balance is $"+ player.getBalanceAmount() );
 			this.setHandOn(false);
 		}
 		else if(dealer.getHandValue(deck)==21){
-			System.out.println("\nDealer has a BlackJack !!");
+			System.out.println("\nDealer has a BlackJack , Dealer Wins !!");
 			player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+			System.out.println("\n Your current balance is $"+ player.getBalanceAmount() );
 			this.setHandOn(false);
 		}
+		else System.out.println("\nPlease enter h or s to hit/stand\n");
 	}
 	
 	}
@@ -265,7 +270,7 @@ public class Game {
 					System.out.print("\n Quitting the Game, Enter y if you want to start a new game !:  ");
 					break;
 				case h:
-					if(!blackjack.checkBalance(blackjack.player))
+					if(blackjack.isGameOn() && !blackjack.checkBalance(blackjack.player))
 						break;
 					if( blackjack.isGameOn() && blackjack.handOn){ //safety check only allowed after game is on and hand is on
 						blackjack.callHit();
@@ -294,13 +299,13 @@ public class Game {
 				}
 			} catch (IllegalArgumentException e) {
 				System.out.println("\nInvalid Command, please enter m to check the menu");
-				inputCommand = input.nextLine();
+				menuFlag=true;
 			}
 		
 			if(!menuFlag && !blackjack.handOn){
 				System.out.println("\nPlease enter y for a new hand !!");
 			}
-			if(!menuFlag &&!blackjack.checkBalance(blackjack.player)) {
+			if(!menuFlag && blackjack.gameOn && !blackjack.checkBalance(blackjack.player)) {
 				System.out.println("\n No more Chips (Balance ZERO) !! , Enter y to start a new game !!");
 			}
 			inputCommand = input.nextLine();
