@@ -9,12 +9,13 @@ public class Game {
 	private Commands command;
 	private boolean gameOn;
 	private boolean handOn;
+	private boolean checkBlackjack;
 	public Game(){ 
 		gameOn=false;
 		handOn=false;
 	};
 	public void initGame(String playerName){ 
-		player=new Player(playerName,10);
+		player=new Player(playerName,100);
 		dealer=new Player("Dealer",0);
 		deck=new Deck();
 		deck.shuffle();
@@ -34,6 +35,12 @@ public class Game {
 	public void setHandOn(boolean handOn) {
 		this.handOn = handOn;
 	}
+	public boolean isCheckBlackjack() {
+		return checkBlackjack;
+	}
+	public void setCheckBlackjack(boolean checkBlackjack) {
+		this.checkBlackjack = checkBlackjack;
+	}
 	public Commands getCommand() {
 		return command;
 	}
@@ -47,6 +54,10 @@ public class Game {
 			this.placeBet(this.player);
 			this.setHandOn(true);
 			this.deal();
+			setCheckBlackjack(true);
+			decideWinner();
+			setCheckBlackjack(false);
+			
 			System.out.println("\nPlease enter h or s to hit/stand\n");
 	}
 	public void hit(Player p){
@@ -154,34 +165,52 @@ public class Game {
 	}
 	
 	public void decideWinner(){ 
-		//only base case 
-		System.out.println(player.getName()+"'s Hand Value is: "+ player.getHandValue(deck).toString());
-		System.out.println(dealer.getName()+"'s Hand Value is: "+ dealer.getHandValue(deck).toString());
-		
-		if(isBusted(player))
-		{
-			System.out.println("\nYou are busted !!");
+		if(!checkBlackjack){
+				//only base case 
+				System.out.println(player.getName()+"'s Hand Value is: "+ this.player.getHandValue(this.deck).toString());
+				System.out.println(dealer.getName()+"'s Hand Value is: "+ this.dealer.getHandValue(this.deck).toString());
+				
+				if(isBusted(player))
+				{
+					System.out.println("\nYou are busted !!");
+					player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+				}
+				else if(isBusted(dealer)){ 
+					System.out.println("\nDealer is busted !!");
+					System.out.println("\n\nCongrats You Win !!");
+					player.setBalanceAmount(player.getBalanceAmount()+(player.getBet()));
+				}
+				else if(player.getHandValue(deck)>dealer.getHandValue(deck)){
+					System.out.println("\nCongrats You Win !!");
+					player.setBalanceAmount(player.getBalanceAmount()+ (player.getBet()));
+				}
+				else if(player.getHandValue(deck)==dealer.getHandValue(deck)){
+					System.out.println("\nPush"); 
+				}
+				else {
+					System.out.println("\nDealer Wins !");
+					player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+				}
+				this.setHandOn(false);
+	  }
+	else{
+		if((player.getHandValue(deck)==21) && (dealer.getHandValue(deck)==21) ){ 
+			System.out.println("\nBoth have a Blackjack !!, but you loose Bet !");
 			player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+			this.setHandOn(false);
 		}
-		else if(isBusted(dealer)){ 
-			System.out.println("\nDealer is busted !!");
-			System.out.println("\n\nCongrats You Win !!");
+		else if(player.getHandValue(deck)==21){
+			System.out.println("\nCongrats You have a BlackJack !!");
 			player.setBalanceAmount(player.getBalanceAmount()+(player.getBet()));
+			this.setHandOn(false);
 		}
-		else if(player.getHandValue(deck)>dealer.getHandValue(deck)){
-			System.out.println("\nCongrats You Win !!");
-			player.setBalanceAmount(player.getBalanceAmount()+ (player.getBet()));
-		}
-		else if(player.getHandValue(deck)==dealer.getHandValue(deck)){
-			System.out.println("\nPush"); 
-		}
-		else {
-			System.out.println("\nDealer Wins !");
+		else if(dealer.getHandValue(deck)==21){
+			System.out.println("\nDealer has a BlackJack !!");
 			player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
+			this.setHandOn(false);
 		}
-		
-			
-		this.setHandOn(false);
+	}
+	
 	}
 	public static void main(String[] args) throws Exception{
 		
@@ -246,7 +275,6 @@ public class Game {
 							blackjack.player.setBalanceAmount(blackjack.player.getBalanceAmount()-blackjack.player.getBet());
 							System.out.println("\nSorry you are busted !\n");
 							System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
-							break;
 						}
 						else System.out.println("\nPlease enter h or s to hit/stand\n");
 					}
