@@ -20,6 +20,7 @@ public class Deck {
 			}
 
 		}
+		
 	}
 
 	// only for testing with Driver program-remove later
@@ -49,7 +50,7 @@ public class Deck {
 			cards[i] = cards[position];
 			cards[position] = temp;
 		}
-		setCurrentIndex(cards.length-1);
+		setCurrentIndex(0);
 
 	}
 

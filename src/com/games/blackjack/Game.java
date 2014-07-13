@@ -13,6 +13,7 @@ public class Game {
 		player=new Player(playerName,100);
 		dealer=new Player("Dealer",0);
 		deck=new Deck();
+		deck.shuffle();
 	}
 	
 	public Commands getCommand() {
@@ -28,44 +29,61 @@ public class Game {
 	public void hit(Player p){
 		
 		p.getCards().add(deck.getCurrentIndex());
-		deck.setCurrentIndex(deck.getCurrentIndex()-1);
+		deck.setCurrentIndex(deck.getCurrentIndex()+1);
+		System.out.println("testing next card" + deck.getCard(deck.getCurrentIndex()).toString());
 	}
 	//deal two cards to player and dealer
 	public void deal(){ 
 		player.getCards().clear();
 		dealer.getCards().clear();
-		if(deck.getCurrentIndex()<14){
+		System.out.println("printing 6 cards");
+		for(int i=0;i<=6;i++){
+			System.out.println("\t"+deck.getCard(i).toString());
+		}
+		if(deck.getCurrentIndex()>37){  // when 1/3 rd of cards are done, do a fresh shuffle
 			deck=new Deck();
 			deck.shuffle();
+			//test only remove later
+			System.out.println("New Shuffle printing 6 cards");
+			for(int i=0;i<=6;i++){
+				System.out.println("\t"+deck.getCard(i).toString());
+			}
 		}
-			hit(player);
+		
 			hit(player);
 			hit(dealer);
+			hit(player);
 			hit(dealer);
 			showCards();
 	}
 	
 	public void showCards(){
-		System.out.println("\t-----------------Dealer--------------------");
-		for(int i=0;i<dealer.getCards().size()-1;i++){
-			System.out.println("\t"+deck.getCard(dealer.getCards().get(i)).toString());
+
+		System.out.println("\t-----------------Player's Hand--------------------");
+		for(int i=0;i<player.getCards().size();i++){
+			System.out.println("\t"+deck.getCard(player.getCards().get(i)));
 		}
 		System.out.println();
 		System.out.println();
-		System.out.println("\t-----------------Player--------------------");
-		for(int i=0;i<player.getCards().size();i++){
-			System.out.println("\t"+deck.getCard(player.getCards().get(i)));
+		System.out.println("\t-----------------Dealer's Hand--------------------");
+		for(int i=0;i<dealer.getCards().size();i++){
+			System.out.println("\t"+deck.getCard(dealer.getCards().get(i)).toString());
 		}
 	}
 	
 	public void printMenu(){ 
-		System.out.println(" --COMMANDS MENU ---------------------------------"); 
-		System.out.println(" ------ Start a game -  y ");
-		System.out.println(" ------ Quit a game  -  q ");
-		System.out.println(" ------ Call HIT     -  h ");
-		System.out.println(" ------ Call STAND   -  s ");
+		System.out.println("\n----COMMANDS MENU ---------------------------------\n"); 
+		System.out.println("\t--> Start a game -  y ");
+		System.out.println("\t--> Quit a game  -  q ");
+		System.out.println("\t--> Call HIT     -  h ");
+		System.out.println("\t--> Call STAND   -  s ");
 	}
-	
+	public void callHit(){ 
+		hit(player);
+		if (this.dealer.getHandValue(deck)<17){
+			hit(dealer);
+		}
+	}
 	public void decideWinner(){ 
 		//only base case 
 		if(isBusted(player))
@@ -97,12 +115,11 @@ public class Game {
 		while (((playerName == null) || (playerName.trim().isEmpty()))){
 			playerName=input.nextLine();
 		}
-		
-		System.out.println("Hello "+playerName + ", Welcome to BlackJack!!");
+		System.out.println("\nHello "+playerName + ", Welcome to BlackJack!!");
 		blackjack.printMenu(); 
 		
 		
-		System.out.print("Please enter y and hit return to start:\n ");
+		System.out.print("\nPlease enter y to start: ");
 		String  inputCommand = input.nextLine();
 		while (!((inputCommand == null) || (inputCommand.trim().isEmpty()))) {
 			try {
@@ -118,12 +135,14 @@ public class Game {
 					blackjack.deal();
 					break;
 				case q:
-					System.out.print("Quitting the Game, Enter y if you want to start a new game !:\n  ");
+					System.out.print("\nQuitting the Game, Enter y if you want to start a new game !:  ");
 					break;
 				case h:
-					System.out.println("Your current call --->"+ blackjack.command.getStatusCode());
+					System.out.println("\nYour current call --->"+ blackjack.command.getStatusCode());
+					blackjack.callHit();
 					break;
 				case s:
+					blackjack.showCards();
 					break;
 				default:
 					break;
