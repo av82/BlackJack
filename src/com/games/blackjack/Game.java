@@ -14,7 +14,7 @@ public class Game {
 		handOn=false;
 	};
 	public void initGame(String playerName){ 
-		player=new Player(playerName,100);
+		player=new Player(playerName,10);
 		dealer=new Player("Dealer",0);
 		deck=new Deck();
 		deck.shuffle();
@@ -48,18 +48,11 @@ public class Game {
 		
 		p.getCards().add(deck.getCurrentIndex());
 		deck.setCurrentIndex(deck.getCurrentIndex()+1);
-		//System.out.println("testing next card" + deck.getCard(deck.getCurrentIndex()).toString());
 	}
 	//deal two cards to player and dealer
 	public void deal(){ 
 		player.getCards().clear();
 		dealer.getCards().clear();
-		System.out.println("printing 6 cards");
-		/* testing only
-		 * for(int i=0;i<=6;i++){
-			System.out.println("\t"+deck.getCard(i).toString());
-		}*/
-		
 		if(deck.getCurrentIndex()>37){  // when 1/3 rd of cards are done, do a fresh shuffle
 			deck=new Deck();
 			deck.shuffle();
@@ -74,15 +67,22 @@ public class Game {
 			hit(dealer);
 			hit(player);
 			hit(dealer);
-			showCards(player);
-			showCards(dealer);
+			showCards(player,true);
+			showCards(dealer,false);
 	}
 	
-	public void showCards(Player showman){
+	public void showCards(Player showman,boolean showAllCards){
+		int showcardSize=showman.getCards().size();
 		
 		System.out.println("\n\t-----------------"+ showman.getName()+"'s Hand--------------------");
-		for(int i=0;i<showman.getCards().size();i++){
+		for(int i=0;i<showcardSize-1;++i){
 			System.out.println("\t"+deck.getCard(showman.getCards().get(i)));
+		}
+		if (showman.getName().equals("Dealer") && !showAllCards){
+			System.out.println("\t***Concealed***");
+		}
+		else{ 
+			System.out.println("\t"+deck.getCard(showman.getCards().get(showcardSize-1)));
 		}
 		System.out.println();
 		System.out.println();
@@ -104,8 +104,8 @@ public class Game {
 			if (this.dealer.getHandValue(deck)<17){ 
 				hit(dealer);
 			}
-			showCards(player);
-			showCards(dealer);
+			showCards(player,true);
+			showCards(dealer,false);
 		}
 		else { 
 			this.setHandOn(false); // when player is busted turn hand off 
@@ -121,8 +121,7 @@ public class Game {
 	}
 	public boolean checkBalance(Player p){
 		if(p.getBalanceAmount()<1){
-			System.out.println("\nSorry You donot have any more chips to bet !!");
-			System.out.println("\nPlease pay $100 at counter and Enter y to start a new game !!");
+			this.setGameOn(false);
 			return false;
 		}
 		else return true;
@@ -176,8 +175,7 @@ public class Game {
 			player.setBalanceAmount(player.getBalanceAmount()-player.getBet());
 		}
 		
-		System.out.println("\nYour current balance is $"+ player.getBalanceAmount() );
-		
+			
 		this.setHandOn(false);
 	}
 	public static void main(String[] args) throws Exception{
@@ -200,7 +198,7 @@ public class Game {
 		String  inputCommand = input.nextLine();
 		while (!((inputCommand == null) || (inputCommand.trim().isEmpty()))) {
 			try {
-				System.out.println(Commands.valueOf(inputCommand)
+				System.out.println("Your current Call is "+Commands.valueOf(inputCommand)
 						.getStatusCode());
 				blackjack.command = Commands.valueOf(inputCommand);
 
@@ -221,9 +219,8 @@ public class Game {
 						System.out.println("Drawing new Hand !!");
 						blackjack.player.setHandValue(0);
 					}
-					blackjack.placeBet(blackjack.player);
 					System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
-					
+					blackjack.placeBet(blackjack.player);
 					blackjack.setHandOn(true);
 					blackjack.deal();
 					break;
@@ -237,17 +234,28 @@ public class Game {
 					if(!blackjack.checkBalance(blackjack.player))
 						break;
 					if( blackjack.isGameOn() && blackjack.handOn){ //safety check only allowed after game is on and hand is on
-						System.out.println("\n Your current call --->"+ blackjack.command.getStatusCode());
 						blackjack.callHit();
+						if(blackjack.isBusted(blackjack.player))
+						{
+							blackjack.setHandOn(false); // when player is busted turn hand off 
+							blackjack.player.setBalanceAmount(blackjack.player.getBalanceAmount()-blackjack.player.getBet());
+							System.out.println("\nSorry you are busted !\n");
+							System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
+							
+						}
 					}
 					break;
 				case s:
 					if( blackjack.isGameOn()  && blackjack.handOn){//safety check only allowed after game is on
 						blackjack.callStand();
-						blackjack.showCards(blackjack.player);
-						blackjack.showCards(blackjack.dealer);
+						blackjack.showCards(blackjack.player,true);
+						blackjack.showCards(blackjack.dealer,true);
 						blackjack.decideWinner();
-						System.out.println("\n Please enter m for menu or  y for a new hand");
+						System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
+						if(blackjack.checkBalance(blackjack.player)) {
+							System.out.println("\nPlease enter y for a new hand !!");
+						}
+					
 					}
 					break;
 				default:
@@ -258,10 +266,14 @@ public class Game {
 				System.out.println("\nInvalid Command, please enter m to check the menu");
 				inputCommand = input.nextLine();
 			}
-			if(blackjack.command.equals(Commands.y) || (blackjack.command.equals(Commands.h))){
+			if ((blackjack.command.equals(Commands.y) || (blackjack.command
+					.equals(Commands.h)))
+					&& !(blackjack.isBusted(blackjack.player))) {
 				System.out.println("\nPlease enter h or s to hit/stand\n");
 			}
-			else System.out.println("\nPlease enter y for new Hand \n");
+			if(!blackjack.checkBalance(blackjack.player)) {
+				System.out.println("\n No more Chips (Balance ZERO) !! , Enter y to start a new game !!");
+			}
 			inputCommand = input.nextLine();
 		}
 		

@@ -57,16 +57,16 @@ public class Player {
 	}
 
 	private void  computeHandValue(Deck deck) {
-		Boolean aceCard=false;
+		Boolean hasAceCard=false;
 		int tmphandValue=0;
 		for(int i=0;i<this.getCards().size();i++){
 			int cardValue=deck.getCard(this.getCards().get(i)).getValue();
 			if(cardValue>10)
 				cardValue=10;
 			if(cardValue==1)
-				aceCard=true;
+				hasAceCard=true;
 			tmphandValue=tmphandValue+cardValue;
-			if(aceCard && (tmphandValue+10 <=21))
+			if(hasAceCard && (tmphandValue+10 <=21))
 				tmphandValue=tmphandValue+10;
 		}
 		this.setHandValue(tmphandValue);

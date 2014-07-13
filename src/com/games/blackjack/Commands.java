@@ -1,7 +1,7 @@
 package com.games.blackjack;
 
 public enum Commands {
-	m("MENU"),y("START"), q("QUIT"), h("HIT"), s("STAND");
+	m("MENU"),y("New Hand"), q("Quit the Game"), h("HIT"), s("STAND");
 	 
 	private String commandCode;
  
