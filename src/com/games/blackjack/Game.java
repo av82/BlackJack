@@ -41,8 +41,13 @@ public class Game {
 		return (p.getHandValue(deck)>21)?true:false;
 	}
 	
-	public void dealTo(Player p){ 
-		p.getCards().add(deck.getCurrentIndex());
+	public void dealnewHand(){ 
+			this.player.setHandValue(0);
+			System.out.println("\n Your current balance is $"+ this.player.getBalanceAmount() );
+			this.placeBet(this.player);
+			this.setHandOn(true);
+			this.deal();
+			System.out.println("\nPlease enter h or s to hit/stand\n");
 	}
 	public void hit(Player p){
 		
@@ -197,6 +202,7 @@ public class Game {
 		System.out.print("\nPlease enter y to start: ");
 		String  inputCommand = input.nextLine();
 		while (!((inputCommand == null) || (inputCommand.trim().isEmpty()))) {
+			boolean menuFlag=false;
 			try {
 				System.out.println("Your current Call is "+Commands.valueOf(inputCommand)
 						.getStatusCode());
@@ -205,24 +211,23 @@ public class Game {
 				switch (blackjack.command) {
 				case m:
 					blackjack.printMenu();
+					menuFlag=true;
 					break;
 				case y:
 					if(!blackjack.isGameOn()){
 						System.out.println("Starting new Game");
 						blackjack.initGame(playerName);
+						blackjack.dealnewHand();
 					}
-					else{
+					else if (!blackjack.isHandOn()){
 						if(!blackjack.checkBalance(blackjack.player)){
 							System.out.println("Starting new Hand");
 							break;
 						}
 						System.out.println("Drawing new Hand !!");
-						blackjack.player.setHandValue(0);
+						blackjack.dealnewHand();
 					}
-					System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
-					blackjack.placeBet(blackjack.player);
-					blackjack.setHandOn(true);
-					blackjack.deal();
+					else System.out.println("Already dealt a hand, please enter--- h---to HIT or -- s-- to STAND !!");
 					break;
 					
 				case q:
@@ -241,8 +246,9 @@ public class Game {
 							blackjack.player.setBalanceAmount(blackjack.player.getBalanceAmount()-blackjack.player.getBet());
 							System.out.println("\nSorry you are busted !\n");
 							System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
-							
+							break;
 						}
+						else System.out.println("\nPlease enter h or s to hit/stand\n");
 					}
 					break;
 				case s:
@@ -252,10 +258,6 @@ public class Game {
 						blackjack.showCards(blackjack.dealer,true);
 						blackjack.decideWinner();
 						System.out.println("\n Your current balance is $"+ blackjack.player.getBalanceAmount() );
-						if(blackjack.checkBalance(blackjack.player)) {
-							System.out.println("\nPlease enter y for a new hand !!");
-						}
-					
 					}
 					break;
 				default:
@@ -266,12 +268,11 @@ public class Game {
 				System.out.println("\nInvalid Command, please enter m to check the menu");
 				inputCommand = input.nextLine();
 			}
-			if ((blackjack.command.equals(Commands.y) || (blackjack.command
-					.equals(Commands.h)))
-					&& !(blackjack.isBusted(blackjack.player))) {
-				System.out.println("\nPlease enter h or s to hit/stand\n");
+		
+			if(!menuFlag && !blackjack.handOn){
+				System.out.println("\nPlease enter y for a new hand !!");
 			}
-			if(!blackjack.checkBalance(blackjack.player)) {
+			if(!menuFlag &&!blackjack.checkBalance(blackjack.player)) {
 				System.out.println("\n No more Chips (Balance ZERO) !! , Enter y to start a new game !!");
 			}
 			inputCommand = input.nextLine();

@@ -8,7 +8,7 @@ public class Driver {
 				System.out.println(i+","+d.getCards()[i].getValue()+" of "+ d.getCards()[i].getSuit().name() );
 			}
 	}
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		Driver drvr = new Driver();
 		Deck d = new Deck();
 		System.out.println("Before Shuffle");
@@ -16,5 +16,5 @@ public class Driver {
 		d.shuffle();
 		System.out.println("After Shuffle");
 		drvr.printDeck(d);
-	}
+	}*/
 }

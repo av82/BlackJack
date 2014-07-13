@@ -43,12 +43,14 @@ public class Deck {
 	// shuffle function,used to randomize the card positions in cards array
 	public void shuffle() {
 		Random rnd = new Random();
-		for (int i = 0; i < cards.length; i++) {
-			int position = rnd.nextInt(cards.length); // generate random no. for
-														// a position
-			Card temp = cards[i];
-			cards[i] = cards[position];
-			cards[position] = temp;
+		for(int k=0;k<2;k++){ //better results for shuffling twice in Test Junit Test case
+			for (int i = 0; i < cards.length; i++) {
+				int position = rnd.nextInt(cards.length); // generate random no. for
+															// a position
+				Card temp = cards[i];
+				cards[i] = cards[position];
+				cards[position] = temp;
+			}
 		}
 		setCurrentIndex(0);
 
