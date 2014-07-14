@@ -3,7 +3,7 @@ Welcome to Text based BlackJack Game !!
 Calls implemented HIT, STAND
 
 1. There is  one player and one dealer.
-2. Program accepts input based on various menu options 
+2. Program accepts input based on  menu options, validating the input.
 3. The player should start with 100 chips and must bet at least 1 chip each hand.
 4. Accepts atleast a bet of 1$ and initialized for a new Game with 100$.
 5. If the current balance of player is less than $1 then a new Game has to be started.
