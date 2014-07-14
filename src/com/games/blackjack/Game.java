@@ -343,6 +343,7 @@ public class Game {
 																	// on
 						blackjack.callHit();
 						if (blackjack.isBusted(blackjack.player)) {
+							
 							blackjack.setHandOn(false); // when player is busted
 														// turn hand off
 							blackjack.player.setBalanceAmount(blackjack.player
@@ -351,6 +352,7 @@ public class Game {
 							System.out.println("\n Sorry you are busted !");
 							System.out.println("\n Your current balance is $"
 									+ blackjack.player.getBalanceAmount());
+							Game.totalDealerWins++;
 						} else
 							System.out
 									.println("\n Please enter h or s to hit/stand\n");
