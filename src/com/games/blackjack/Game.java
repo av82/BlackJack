@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * @author Arun Velagapalli
- *
+ * 
  */
 public class Game {
 	private Deck deck;
@@ -172,7 +172,8 @@ public class Game {
 		Scanner in = new Scanner(System.in);
 		System.out.println("\n Please enter amount of bet for this hand!!");
 		while (!in.hasNextInt()) {
-			System.out.println("\n Invalid $ amount, please bet atleast 1 chip");
+			System.out
+					.println("\n Invalid $ amount, please bet atleast 1 chip");
 			in.next();
 		}
 		Integer playerBet = in.nextInt();
@@ -195,6 +196,41 @@ public class Game {
 		}
 		p.setBet(playerBet);
 
+	}
+
+	public void checkBlackJack() {
+		if ((player.getHandValue(deck) == 21)
+				&& (dealer.getHandValue(deck) == 21)) {
+			System.out
+					.println("\n Both have a Blackjack !!, but you loose Bet !");
+			showCards(player, true);
+			showCards(dealer, true);
+			player.setBalanceAmount(player.getBalanceAmount() - player.getBet());
+			System.out.println("\n Your current balance is $"
+					+ player.getBalanceAmount());
+			this.setHandOn(false);
+			totalDealerWins++;
+		} else if (player.getHandValue(deck) == 21) {
+			System.out.println("\n Congrats You have a BlackJack, You Win !!");
+			showCards(player, true);
+			showCards(dealer, true);
+			player.setBalanceAmount(player.getBalanceAmount()
+					+ (player.getBet()));
+			System.out.println("\n Your current balance is $"
+					+ player.getBalanceAmount());
+			this.setHandOn(false);
+			totalPlayerWins++;
+		} else if (dealer.getHandValue(deck) == 21) {
+			System.out.println("\n Dealer has a BlackJack , Dealer Wins !!");
+			showCards(player, true);
+			showCards(dealer, true);
+			player.setBalanceAmount(player.getBalanceAmount() - player.getBet());
+			System.out.println("\n Your current balance is $"
+					+ player.getBalanceAmount());
+			this.setHandOn(false);
+			totalDealerWins++;
+		} else
+			System.out.println("\n Please enter h or s to hit/stand\n");
 	}
 
 	public void decideWinner() {
@@ -233,41 +269,7 @@ public class Game {
 			}
 			this.setHandOn(false);
 		} else {
-			if ((player.getHandValue(deck) == 21)
-					&& (dealer.getHandValue(deck) == 21)) {
-				System.out
-				.println("\n Both have a Blackjack !!, but you loose Bet !");
-				showCards(player, true);
-				showCards(dealer,true);
-				player.setBalanceAmount(player.getBalanceAmount()
-						- player.getBet());
-				System.out.println("\n Your current balance is $"
-						+ player.getBalanceAmount());
-				this.setHandOn(false);
-				totalDealerWins++;
-			} else if (player.getHandValue(deck) == 21) {
-				System.out
-				.println("\n Congrats You have a BlackJack, You Win !!");
-				showCards(player, true);
-				showCards(dealer,true);
-				player.setBalanceAmount(player.getBalanceAmount()
-						+ (player.getBet()));
-				System.out.println("\n Your current balance is $"
-						+ player.getBalanceAmount());
-				this.setHandOn(false);
-				totalPlayerWins++;
-			} else if (dealer.getHandValue(deck) == 21) {
-				System.out.println("\n Dealer has a BlackJack , Dealer Wins !!");
-				showCards(player, true);
-				showCards(dealer,true);
-				player.setBalanceAmount(player.getBalanceAmount()
-						- player.getBet());
-				System.out.println("\n Your current balance is $"
-						+ player.getBalanceAmount());
-				this.setHandOn(false);
-				totalDealerWins++;
-			} else
-				System.out.println("\n Please enter h or s to hit/stand\n");
+				checkBlackJack();
 		}
 
 	}
@@ -285,8 +287,8 @@ public class Game {
 		while (((playerName == null) || (playerName.trim().isEmpty()))) {
 			playerName = input.nextLine();
 		}
-		System.out
-				.println("\n Hello " + playerName + ", Welcome to BlackJack!!");
+		System.out.println("\n Hello " + playerName
+				+ ", Welcome to BlackJack!!");
 		blackjack.printMenu();
 
 		System.out.println("\n Please enter y to start: ");
@@ -371,16 +373,17 @@ public class Game {
 					}
 					break;
 				case a:
-					if(blackjack.isGameOn()){
-					System.out.println("\n Total Hands Won by "
-							+ blackjack.player.getName() + " so far: "
-							+ Game.totalPlayerWins);
-					System.out.println(" Total Hands Won Dealer so far: "
-							+ Game.totalDealerWins);
-					System.out.println(" Total Hands that were Push/draw: "
-							+ Game.totalPushes);
-					}
-					else System.out.println(" No stats yet,start a new Game to check stats !!");
+					if (blackjack.player!=null) {
+						System.out.println("\n Total Hands Won by "
+								+ blackjack.player.getName() + " so far: "
+								+ Game.totalPlayerWins);
+						System.out.println(" Total Hands Won Dealer so far: "
+								+ Game.totalDealerWins);
+						System.out.println(" Total Hands that were Push/draw: "
+								+ Game.totalPushes);
+					} else
+						System.out
+								.println(" No stats yet,start a new Game to check stats !!");
 					if (blackjack.isHandOn()) {
 						System.out
 								.println("\n Please enter h/s to hit or stand !!");
