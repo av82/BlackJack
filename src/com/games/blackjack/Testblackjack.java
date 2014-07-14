@@ -38,8 +38,10 @@ public class Testblackjack {
 		player.set(g2, testplayer);
 		dealer.set(g2, testdealer);
 		checkBlackJack.set(g2, isBlackJack);
-		g2.showCards(testplayer, true);
-		g2.showCards(testdealer, true);
+		if(!isBlackJack){
+			g2.showCards(testplayer, true);
+			g2.showCards(testdealer, true);
+		}
 		g2.decideWinner();
 	}
 
