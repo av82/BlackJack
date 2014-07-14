@@ -20,14 +20,15 @@ public class Deck {
 			}
 
 		}
-		
+
 	}
 
 	// only for testing with Driver program-remove later
 	public Card[] getCards() {
 		return cards;
 	}
-	public Card getCard(int i){
+
+	public Card getCard(int i) {
 		return cards[i];
 	}
 
@@ -43,9 +44,11 @@ public class Deck {
 	// shuffle function,used to randomize the card positions in cards array
 	public void shuffle() {
 		Random rnd = new Random();
-		for(int k=0;k<2;k++){ //better results for shuffling twice in Test Junit Test case
+		for (int k = 0; k < 2; k++) { // better results for shuffling twice in
+										// Test Junit Test case
 			for (int i = 0; i < cards.length; i++) {
-				int position = rnd.nextInt(cards.length); // generate random no. for
+				int position = rnd.nextInt(cards.length); // generate random no.
+															// for
 															// a position
 				Card temp = cards[i];
 				cards[i] = cards[position];

@@ -1,8 +1,5 @@
 package com.games.blackjack;
 
 public enum Suit {
-Clubs,
-Hearts,
-Spades,
-Diamonds
+	Clubs, Hearts, Spades, Diamonds
 }
