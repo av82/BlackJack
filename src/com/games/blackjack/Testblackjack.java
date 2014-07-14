@@ -34,6 +34,9 @@ public class Testblackjack {
 		testdealer.getCards().add(playerHandIndicesinDeck[1]);// dearler KING
 		testplayer.getCards().add(playerHandIndicesinDeck[2]); // Jack
 		testdealer.getCards().add(playerHandIndicesinDeck[3]); // dealer Queen
+		if(playerHandIndicesinDeck[4]!=null){
+			testplayer.getCards().add(playerHandIndicesinDeck[4]);
+		}
 
 		player.set(g2, testplayer);
 		dealer.set(g2, testdealer);
@@ -79,6 +82,14 @@ public class Testblackjack {
 		playerHandIndicesinDeck[2] = 8;// 9 for Player
 		playerHandIndicesinDeck[3] = 13;// Ace for Dealer
 	}
+	
+	public void setupThreeCardRun(){ 
+		playerHandIndicesinDeck[0] = 8; // 9 for Player
+		playerHandIndicesinDeck[1] = 34;// 2 for Dealer
+		playerHandIndicesinDeck[2] = 27;// 9 for Player
+		playerHandIndicesinDeck[3] = 38;// King for Dealer
+		playerHandIndicesinDeck[4]= 13; //A 
+	}
 
 	public void checkCase() throws IllegalArgumentException,
 			IllegalAccessException, SecurityException, NoSuchFieldException {
@@ -113,6 +124,9 @@ public class Testblackjack {
 		System.out.println("\nTesting for Player's Win with BlackJack !!");
 		checkHand(deck, player, dealer, checkBlackjack, true);
 
+		setupThreeCardRun();
+		System.out.println("\nTesting Three Card Run");
+		checkHand(deck, player, dealer, checkBlackjack, false);
 	}
 
 	@Test
@@ -126,7 +140,7 @@ public class Testblackjack {
 		d2.shuffle(); // test shuffle
 		System.out.println("\n ------Deck d2 after Shuffling--------");
 		printDeck(d2);
-		playerHandIndicesinDeck = new Integer[4];
+		playerHandIndicesinDeck = new Integer[5];
 		checkCase();
 		// check if shuffle randomizes the deck
 		assertFalse("shuffled and unshuffled decks",
