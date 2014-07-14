@@ -2,6 +2,10 @@ package com.games.blackjack;
 
 import java.util.Scanner;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public class Game {
 	private Deck deck;
 	private Player player;

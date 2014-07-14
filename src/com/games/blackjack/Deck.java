@@ -2,6 +2,10 @@ package com.games.blackjack;
 
 import java.util.Random;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public class Deck {
 	private Card[] cards; // a deck has an array of cards indexed at zero
 	private int currentIndex; // a marker to find number of cards already dealt.

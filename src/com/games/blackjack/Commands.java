@@ -1,5 +1,9 @@
 package com.games.blackjack;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public enum Commands {
 	m("MENU"), y("New Hand"), q("Quit the Game"), h("HIT"), s("STAND"), a(
 			"Show statistics for Wins and losses");

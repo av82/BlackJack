@@ -2,6 +2,10 @@ package com.games.blackjack;
 
 import java.util.HashMap;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public class Card {
 	// properties of a card - Face Value, Suit
 

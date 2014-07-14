@@ -3,6 +3,10 @@ package com.games.blackjack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public class Player {
 
 	private Integer balanceAmount;

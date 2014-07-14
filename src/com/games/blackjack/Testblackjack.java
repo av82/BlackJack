@@ -4,21 +4,20 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Test;
 
+/**
+ * @author Arun Velagapalli
+ *
+ */
 public class Testblackjack {
 	Integer[] playerHandIndicesinDeck;
 
 	public void printDeck(Deck d) {
 		int deckSize = d.getCards().length;
 		for (int i = 0; i < deckSize; i++) {
-			System.out.println(i + "," + d.getCards()[i].getValue() + " of "
-					+ d.getCards()[i].getSuit().name());
+			System.out.println(i + "," + d.getCards()[i].toString());
 		}
 	}
 
@@ -46,9 +45,9 @@ public class Testblackjack {
 	}
 
 	public void setupforPush() {
-		playerHandIndicesinDeck[0] = 0; // Ace for Player
+		playerHandIndicesinDeck[0] = 10; //Jack for Player
 		playerHandIndicesinDeck[1] = 12;// King for Dealer
-		playerHandIndicesinDeck[2] = 13;// Ace for Player
+		playerHandIndicesinDeck[2] = 51;// King for Player
 		playerHandIndicesinDeck[3] = 25;// King for Dealer
 	}
 
