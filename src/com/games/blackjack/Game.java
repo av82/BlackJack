@@ -235,10 +235,10 @@ public class Game {
 		} else {
 			if ((player.getHandValue(deck) == 21)
 					&& (dealer.getHandValue(deck) == 21)) {
+				System.out
+				.println("\n Both have a Blackjack !!, but you loose Bet !");
 				showCards(player, true);
 				showCards(dealer,true);
-				System.out
-						.println("\n Both have a Blackjack !!, but you loose Bet !");
 				player.setBalanceAmount(player.getBalanceAmount()
 						- player.getBet());
 				System.out.println("\n Your current balance is $"
@@ -246,10 +246,10 @@ public class Game {
 				this.setHandOn(false);
 				totalDealerWins++;
 			} else if (player.getHandValue(deck) == 21) {
+				System.out
+				.println("\n Congrats You have a BlackJack, You Win !!");
 				showCards(player, true);
 				showCards(dealer,true);
-				System.out
-						.println("\n Congrats You have a BlackJack, You Win !!");
 				player.setBalanceAmount(player.getBalanceAmount()
 						+ (player.getBet()));
 				System.out.println("\n Your current balance is $"
@@ -257,9 +257,9 @@ public class Game {
 				this.setHandOn(false);
 				totalPlayerWins++;
 			} else if (dealer.getHandValue(deck) == 21) {
+				System.out.println("\n Dealer has a BlackJack , Dealer Wins !!");
 				showCards(player, true);
 				showCards(dealer,true);
-				System.out.println("\n Dealer has a BlackJack , Dealer Wins !!");
 				player.setBalanceAmount(player.getBalanceAmount()
 						- player.getBet());
 				System.out.println("\n Your current balance is $"
